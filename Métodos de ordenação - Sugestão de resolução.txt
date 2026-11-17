@@ -1,0 +1,162 @@
+1 - Implemente os algoritmos Insertion Sort, Selection Sort e Bubble Sort em linguagem C. Utilize, para fins de testes, um vetor com 5 elementos inteiros.
+
+/* Insertion Sort */
+ 
+# include <stdio.h>
+ 
+void apresentaVetor(int vetor[]){
+    for(int i = 0; i < 5; i++){
+        printf("%d ", vetor[i]);
+    }
+    printf("\n");
+}
+ 
+int main() {
+    
+    int i, j, k, elemento, vetor[5] = {7, 4, 1, 5, 6};
+    
+    apresentaVetor(vetor);
+    
+    for(j = 1; j < 5; j++){
+        elemento = vetor[j];
+        i = j - 1;
+        
+        while(i >= 0 && vetor[i] > elemento){
+            vetor[i + 1] = vetor[i];
+            i--;
+            vetor[i + 1] = elemento;
+        }
+        
+        apresentaVetor(vetor);
+    }
+    
+    return 0;
+}
+
+
+/* Selection Sort */
+ 
+# include <stdio.h>
+ 
+void apresentaVetor(int vetor[]){
+    for(int i = 0; i < 5; i++){
+        printf("%d ", vetor[i]);
+    }
+    printf("\n");
+}
+ 
+int main() {
+    
+    int i, j, menor, aux, vetor[5] = {7, 4, 1, 5, 6};
+    
+    apresentaVetor(vetor);
+    
+    for(i = 0; i < 5; i++){
+        
+        menor = i;
+        
+        for(j = i + 1; j < 5; j++){
+            if(vetor[j] < vetor[menor]){
+                menor = j;
+            }
+            
+            aux = vetor[menor];
+            vetor[menor] = vetor[i];
+            vetor[i] = aux;
+        }
+        
+        apresentaVetor(vetor);
+    }
+    
+    return 0;
+}
+
+
+/* Bubble Sort */
+ 
+# include <stdio.h>
+ 
+void apresentaVetor(int vetor[]){
+    for(int i = 0; i < 5; i++){
+        printf("%d ", vetor[i]);
+    }
+    printf("\n");
+}
+ 
+int main() {
+ 
+    int i, j, k, aux, vetor[5] = {7, 4, 1, 5, 6};
+ 
+    apresentaVetor(vetor);
+ 
+    for(i = 5; i >= 1; i--){
+        for(j = 1; j <= i - 1; j++){
+            if(vetor[ j - 1] > vetor[j]){
+                aux = vetor[j];
+                vetor[j] = vetor[j - 1];
+                vetor[j - 1] = aux;
+            }
+            
+            apresentaVetor(vetor);
+        }
+    }
+    
+    return 0;
+}
+
+
+2 - Na atividade anterior, qual o dos métodos de classificação foi finalizado com o menor número de iterações?
+
+Com os elementos que usei como exemplo (7, 4, 1, 5, 6):
+ 
+Insertion Sort: 4
+﻿Selection Sort: 5
+Bubble Sort: ﻿10
+
+
+3 - Crie um vetor de registros com o contato de 5 pessoas (nome, email e telefone). Alimente diretamente o vetor. Utilize o algoritmo de classificação a sua escolha para classificar os contatos por nome.
+
+/* Insertion Sort */
+ 
+#include <stdio.h>
+#include <string.h>
+ 
+struct Contato{
+    char nome[21];
+    char email[21];
+    char telefone[11];
+};
+ 
+int main() {
+    
+    int i, j;
+    
+    struct Contato contatos[5] = {
+        {"Marcelo", "marcelo@exemplo.com", "1111-1111"},
+        {"Pedro", "pedro@exemplo.com", "2222-2222"},
+        {"Ana", "ana@exemplo.com", "3333-3333"},
+        {"Beatriz", "beatriz@exemplo.com", "4444-4444"},
+        {"Antonio", "antonio@exemplo.com", "5555-5555"}
+    };
+    
+    struct Contato elemento;
+    
+    for(j = 1; j < 5; j++){
+        elemento = contatos[j];
+        i = j - 1;
+        
+        while(i >= 0 && strcmp(contatos[i].nome, elemento.nome) > 0){
+            contatos[i + 1] = contatos[i];
+            i--;
+            contatos[i + 1] = elemento;
+        }
+    }
+    
+    for (i = 0; i < 5; i++) {
+        printf("Nome: %s", contatos[i].nome);
+        printf("\nEmail: %s", contatos[i].email);
+        printf("\nTelefone: %s\n\n", contatos[i].telefone);
+    }
+    
+    return 0;
+}

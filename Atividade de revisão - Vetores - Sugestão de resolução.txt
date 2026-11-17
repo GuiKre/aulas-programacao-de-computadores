@@ -1,0 +1,168 @@
+1 - Escreva um programa alimente um vetor com 10 números inteiros distintos. Em seguida, leia um número qualquer do teclado e mostre na tela o índice em que o número se encontra no vetor, ou então a mensagem "Não encontrado!", se o número não estiver presente no vetor.
+
+#include <stdio.h>
+ 
+int main() {
+ 
+    int vetor[10], i, num;
+    
+    /* Alimenta o vetor */
+    for(i = 0; i < 10; i++){
+        printf("Informe elemento [%d]: ", i + 1);
+        scanf("%d", &vetor[i]);
+    }
+ 
+    /* Solicita elemento para busca */
+    printf("Informe número: ");
+    scanf("%d", &num);
+ 
+    /* Busca o elemento no vetor */
+    for(i = 0; i < 10; i++){
+        if(vetor[i] == num){
+            printf("Elemento encontrado no índice: %d", i);
+            return 0;
+        }
+    }
+ 
+    printf("Não encontrado!");
+    
+    return 0;
+}
+
+
+2 - Escreva um programa que alimente um vetor com 10 números inteiros. Apresente na tela o menor valor do vetor, o maior valor do vetor, a soma dos valores do vetor e a média dos valores do vetor.
+
+#include <stdio.h>
+ 
+int main() {
+ 
+    int vetor[10], menor, maior, soma, i;
+    float media;
+ 
+    /* Alimenta o vetor */
+    for(i = 0; i < 10; i++){
+        printf("Informe elemento [%d]: ", i + 1);
+        scanf("%d", &vetor[i]);
+    }
+ 
+    /* Atribução dos valores iniciais */
+    menor = vetor[0];
+    maior = vetor[0];
+    soma = vetor[0];
+ 
+    /* Vericação dos elementos */
+    for(i = 1; i < 10; i++){
+        if(vetor[i] < menor){
+            menor = vetor[i];
+        }
+        if(vetor[i] > maior){
+            maior = vetor[i];
+        }
+        soma += vetor[i];
+    }
+ 
+    media = soma / 10.0;
+    
+    printf("\nMenor valor: %d", menor);
+    printf("\nMaior valor: %d", maior);
+    printf("\nSoma: %d", soma);
+    printf("\nMédia: %.1f", media);
+    
+    return 0;
+}
+
+
+3 - Escreva um programa alimente diretamente um vetor com 10 números inteiros e apresente na tela uma mensagens informando se todos os elementos do vetor são iguais ou não.
+
+#include <stdio.h>
+ 
+int main() {
+ 
+    int vetor[10] = {1, 1, 3, 1, 1, 1, 1, 1, 1, 1}, i;
+    
+    /* Verifica se os elementos são iguais */
+    for(i = 1; i < 10; i++){
+        if(vetor[0] != vetor[i]){
+            printf("Os elementos são diferentes!");
+            return 0;
+        }
+    }
+ 
+    printf("Os elementos são iguais!");
+    
+    return 0;
+}
+
+
+4 - Escreva um programa que alimente diretamente um vetor G de 6 elementos contendo o gabarito da Mega-Sena e um vetor A de 10 elementos contendo uma aposta. A seguir, mostre na tela quantos pontos fez o apostador.
+
+/* Versão 1 - Sem validação */
+ 
+#include <stdio.h>
+ 
+int main() {
+    
+    /* Declara e alimenta os vetores */
+    int G[6] = {10, 20, 30, 40, 50, 60}, A[10] = {12, 19, 25, 28, 30, 34, 40, 47, 49, 51}, i, j, acertos = 0;
+ 
+    /* Verifica a quantidade de acertos */
+    for(i = 0; i < 6; i++){
+        for(j = 0; j < 10; j++){
+            if(G[i] == A[j]){
+                acertos++;
+                break;
+            }
+        }
+    }
+    
+    /* Apresenta o número de acertos */
+    printf("Número de acertos: %d", acertos);
+ 
+    return 0;
+}
+  
+
+/* Versão 2 - Com validação */
+ 
+#include <stdio.h>
+#include <stdbool.h>
+ 
+int main() {
+    
+    int A[10], G[6] = {10, 20, 30, 40, 50, 60}, i, j, num, acertos = 0;
+    bool existe;
+    
+    /* Alimenta o vetor não aceitando números menores que 1, números maiores que 60 ou números informados anteriormente */
+    for(i = 0; i < 10; i++){
+        do{
+            existe = false;
+            
+            printf("Informe número [%d]: ", i + 1);
+            scanf("%d", &num);
+            
+            for(j = 0; j <= i; j++){
+                if(num == A[j]){
+                    existe = true;
+                    break;
+                }
+            }
+            
+        }while(num < 1 || num > 60 || existe == true);
+        
+        A[i] = num;
+    }
+    
+     /* Verifica a quantidade de acertos */
+    for(i = 0; i < 6; i++){
+        for(j = 0; j < 10; j++){
+            if(G[i] == A[j]){
+                acertos++;
+            }
+        }
+    }
+    
+    /* Apresenta o número de acertos */
+    printf("Número de acertos: %d", acertos);
+    
+    return 0;
+}

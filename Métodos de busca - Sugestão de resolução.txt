@@ -1,0 +1,178 @@
+1 - Implemente o algoritmo de busca sequencial em linguagem C. Utilize para testes, um vetor com 10 elementos. Os valores devem ser inseridos diretamente no vetor.
+
+#include <stdio.h>
+ 
+int main() {
+ 
+    int vetor[10] = {1, -3, 17, 45, 100, 28, 29, 50, -7, 62}, i, num;
+    
+    /* Solicita elemento para busca */
+    printf("Informe número: ");
+    scanf("%d", &num);
+ 
+    /* Busca o elemento no vetor */
+    for(i = 0; i < 10; i++){
+        if(vetor[i] == num){
+            printf("Elemento encontrado no índice: %d", i);
+            return 0;
+        }
+    }
+ 
+    printf("Elemento não encontrado!");
+    
+    return 0;
+}
+
+
+2 - Refaça a atividade anterior assumindo que um valor pode aparecer várias vezes em um vetor. Neste caso, deve ser mostrado todas as posições (índices) onde o valor foi encontrado. Se a valor não for encontrado no vetor, a mensagem "Valor não encontrado" deve ser exibida ao usuário.
+
+#include <stdio.h>
+#include <stdbool.h>
+ 
+int main() {
+ 
+    int vetor[10] = {1, -3, 29, 45, 100, 28, 29, 50, -7, 29}, i, num;
+    bool encontrado = false;
+    
+   /* Solicita elemento para busca */
+    printf("Informe número: ");
+    scanf("%d", &num);
+ 
+    /* Busca o elemento no vetor */
+    for(i = 0; i < 10; i++){
+        if(vetor[i] == num){
+            printf("Elemento encontrado no índice: %d\n", i);
+            encontrado = true;
+        }
+    }
+ 
+    if(encontrado == false){
+       printf("Elemento não encontrado!"); 
+    }
+ 
+    return 0;
+}
+
+
+3 - Implemente o algoritmo de busca binária em linguagem C. Utilize para testes, um vetor com 15 elementos. Os valores devem ser inseridos diretamente no vetor. Observe a necessidade de ordenar o vetor antes de iniciar a atividade de busca.
+
+#include <stdio.h>
+#include <stdbool.h>
+ 
+int main() {
+ 
+    int vetor[15] = {1, -3, 17, 45, 100, 28, 29, 50, -7, 62, 4, 19, 99, 21, -6}, i, num;
+    
+    /* Ordena o vetor - Insertion Sort */
+    int j, k, elemento;
+    
+    for(j = 1; j < 15; j++){
+        elemento = vetor[j];
+        i = j - 1;
+        
+        while(i >= 0 && vetor[i] > elemento){
+            vetor[i + 1] = vetor[i];
+            i--;
+            vetor[i + 1] = elemento;
+        }
+    }
+    
+    /* Solicita elemento para busca */
+    printf("Informe número: ");
+    scanf("%d", &num);
+ 
+    /* Busca o elemento no vetor */
+    int esquerda, direita, meio;
+    bool encontrado = false;
+    
+    esquerda = 0;
+    direita = 14;
+    meio = (esquerda + direita) / 2;
+    
+    while(encontrado == false && esquerda <= direita){
+        if(vetor[meio] == num){
+            printf("Elemento encontrado no índice: %d", meio);
+            encontrado = true;
+            break;
+        }
+        else{
+            if(num > vetor[meio]){
+                esquerda = meio + 1;
+            }
+            else{
+                direita = meio - 1;
+            }
+        }
+        
+        meio = (esquerda + direita) / 2;
+    }
+    
+    if(encontrado == false){
+       printf("Elemento não encontrado!"); 
+    }
+ 
+    return 0;
+}
+
+
+4 - Altere o método de busca binária da atividade anterior para que, a cada divisão do vetor, seja mostrado quantos elementos foram descartados na busca.
+
+#include <stdio.h>
+#include <stdbool.h>
+ 
+int main() {
+ 
+    int vetor[15] = {1, -3, 17, 45, 100, 28, 29, 50, -7, 62, 4, 19, 99, 21, -6}, i, num;
+    
+    /* Ordena o vetor - Insertion Sort */
+    int j, k, elemento;
+    
+    for(j = 1; j < 15; j++){
+        elemento = vetor[j];
+        i = j - 1;
+        
+        while(i >= 0 && vetor[i] > elemento){
+            vetor[i + 1] = vetor[i];
+            i--;
+            vetor[i + 1] = elemento;
+        }
+    }
+    
+    /* Solicita elemento para busca */
+    printf("Informe número: ");
+    scanf("%d", &num);
+ 
+    /* Busca o elemento no vetor */
+    int esquerda, direita, meio;
+    bool encontrado = false;
+    
+    esquerda = 0;
+    direita = 14;
+    meio = (esquerda + direita) / 2;
+    
+    while(encontrado == false && esquerda <= direita){
+        if(vetor[meio] == num){
+            printf("\nElemento encontrado no índice: %d", meio);
+            encontrado = true;
+            break;
+        }
+        else{
+            if(num > vetor[meio]){
+                printf("\nElementos descartados: %d", meio - esquerda + 1);
+                esquerda = meio + 1;
+            }
+            else{
+                printf("\nElementos descartados: %d", direita - meio + 1);
+                direita = meio - 1;
+            }
+        }
+        
+        meio = (esquerda + direita) / 2;
+    }
+    
+    if(encontrado == false){
+       printf("Elemento não encontrado!"); 
+    }
+ 
+    return 0;
+}

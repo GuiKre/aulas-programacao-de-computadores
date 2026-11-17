@@ -1,0 +1,318 @@
+1 - Escreva uma função que retorne o valor absoluto de um número.
+
+#include <stdio.h>
+ 
+int absoluto(int num){
+    
+	if(num >= 0){
+		return num;
+	}
+	else{
+		return num * -1;
+	}
+}
+ 
+int main() {
+    
+	int num;
+    
+	printf("Informe o número: ");
+	scanf("%d", &num);
+    
+	printf("O valor absoluto é: %d", absoluto(num));
+    
+	return 0;
+}
+
+
+2 - Escreva uma função que retorne o maior valor entre dois números inteiros.
+
+#include <stdio.h>
+ 
+int maior (int n1, int n2){
+ 
+	if(n1 > n2){
+		return n1;
+	}
+	else{
+		return n2;
+	}
+}
+ 
+int main() {
+    
+	int num1, num2;
+    
+	printf("Informe o primeiro número: ");
+	scanf("%d", &num1);
+    
+	printf("Informe o segundo número: ");
+	scanf("%d", &num2);
+ 
+	printf("O maior número é: %d", maior(num1, num2));
+    
+	return 0;
+}
+
+
+3 - Escreva uma função que retorne o maior valor entre três números inteiros.
+
+#include <stdio.h>
+ 
+int maior (int n1, int n2, int n3){
+ 
+	int maior;
+ 
+	maior = n1;
+    
+	if(n2 > maior){
+		maior = n2;
+	}
+    
+	if(n3 > maior){
+		maior = n3;
+	}
+    
+	return maior;
+}
+ 
+int main() {
+    
+	int num1, num2, num3;
+    
+	printf("Informe primeiro número: ");
+	scanf("%d", &num1);
+    
+	printf("Informe segundo número: ");
+	scanf("%d", &num2);
+    
+	printf("Informe terceiro número: ");
+	scanf("%d", &num3);
+    
+	printf("O maior número é: %d", maior(num1, num2, num3));
+    
+	return 0;
+}
+
+
+4 - Escreva uma função que receba uma letra e 3 notas de um aluno. Se a letra for A, a função deve retornar a média aritmética das notas do aluno e se a letra for P, a função deve retornar a sua média ponderada com os pesos 5, 3 e 2 respectivamente.
+
+#include <stdio.h>
+ 
+float media(float n1, float n2, float n3, char op) {
+    
+	if (op == 'A') {
+		return (n1 + n2 + n3) / 3;
+	} 
+	else{
+		return (n1 * 5 + n2 * 3 + n3 * 2) / 10;
+	}
+}
+ 
+int main(){
+    
+	float nota1, nota2, nota3, resultado;
+	char op;
+    
+	printf("Informe o cálculo desejado [A ou P]: ");
+	scanf("%c", &op);
+ 
+	printf("Informe primeira nota: ");
+	scanf("%f", &nota1);
+    
+	printf("Informe a segunda nota: ");
+	scanf("%f", &nota2);
+    
+	printf("Informe a terceira nota: ");
+	scanf("%f", &nota3);
+ 
+	resultado = media(nota1, nota2, nota3, op);
+    
+	printf("Media: %.1f", resultado);
+    
+	return 0;
+}
+
+
+5 - Escreva uma função que receba um símbolo e dois números. O símbolo representa a operação que se deseja efetuar com os números (soma, subtração, multiplicação ou divisão).
+
+#include <stdio.h>
+ 
+float calculo(float n1, float n2, char op) {
+ 
+	switch(op){
+		case '+': return n1 + n2; break;
+		case '-': return n1 - n2; break;
+		case '*': return n1 * n2; break;
+		case '/': return n1 / n2; break;
+	}
+}
+ 
+int main(){
+ 
+	float num1, num2;
+	char op;
+    
+	printf("Informe a operação desejada [+, -, * ou /]: ");
+	scanf("%c", &op);
+    
+	printf("Informe o primeiro número: ");
+	scanf("%f", &num1);
+    
+	printf("Informe o segundo número: ");
+	scanf("%f", &num2);
+ 
+	if(op == '/' && num2 == 0){
+		printf("Não é possível a divisão por 0.");
+	}
+	else{
+		printf("Resultado: %.1f", calculo(num1, num2, op));
+	}
+    
+	return 0;
+}
+
+
+6 - Escreva uma função que receba como parâmetro um número inteiro e gere como saída n linhas com asteriscos, conforme o exemplo a seguir (para n = 5):
+
+*
+**
+***
+****
+*****
+
+
+#include <stdio.h>
+ 
+void linhas(int num){
+ 
+	int i, j;
+    
+	for(i = 1; i <= num; i++){
+		for(j = 1; j <= i; j++){
+			printf("*");
+		}
+		printf("\n");
+	}
+}
+ 
+int main(){
+ 
+	int num;
+    
+	printf("Informe o número de linhas desejadas: ");
+	scanf("%d", &num);
+ 
+	linhas(num);
+    
+	return 0;
+}
+
+
+7 - Escreva uma função que receba o nome de um produto, o preço desse produto e o valor em dinheiro entregue ao vendedor. Em seguida, deve ser mostrada uma mensagem baseada no seguinte exemplo: "Você comprou um produto (mouse) por R$ 185,00 e entregou ao vendedor R$ 200,00 em dinheiro. Você vai receber R$ 15,00 de troco. Volte sempre!".
+
+#include <stdio.h>
+ 
+void mensagem(char nome_produto[21], float preco, float valor_entregue){
+    
+    printf("Você comprou um produto (%s) por R$ %.2f e entregou ao vendedor R$ %.2f em dinheiro. Você vai receber R$ %.2f de troco. Volte sempre!", nome_produto, preco, valor_entregue, valor_entregue - preco);
+}
+ 
+int main() {
+    
+    char nome_produto[21];
+    float preco, valor_entregue;
+    
+    printf("Informe o nome do produto: ");
+    scanf("%s", nome_produto);
+    
+    printf("Informe o preço do produto: ");
+    scanf("%f", &preco);
+    
+    printf("Informe o valor entregue ao vendedor: ");
+    scanf("%f", &valor_entregue);
+    
+    mensagem(nome_produto, preco, valor_entregue);
+ 
+    return 0;
+}
+
+
+8 - Escreva uma função que receba o nome e o preço de um produto. Em seguida, deve ser mostrada uma mensagem baseada no seguinte exemplo: “Você comprou um produto (mouse) por R$ 185,00 e acaba de ganhar um desconto de 10%. Assim você vai pagar apenas R$ 166,50 pelo seu produto. Volte sempre!”.
+
+#include <stdio.h>
+ 
+void mensagem(char nome_produto[21], float preco){
+    
+    printf("Você comprou um produto (%s) por R$ %.2f e e acaba de ganhar um desconto de 10%%. Assim você vai pagar apenas R$ %.2f pelo seu produto. Volte sempre!", nome_produto, preco, preco * 0.9);
+}
+ 
+int main() {
+    
+    char nome_produto[21];
+    float preco;
+    
+    printf("Informe o nome do produto: ");
+    scanf("%s", nome_produto);
+    
+    printf("Informe o preço do produto: ");
+    scanf("%f", &preco);
+    
+    mensagem(nome_produto, preco);
+ 
+    return 0;
+}
+
+
+9 - Escreva uma função que retorne a média dos valores contidos em um vetor com 5 elementos.
+
+#include <stdio.h>
+ 
+float media(float vet[5]){
+    
+    float resultado, soma = 0;
+    
+    for(int i = 0; i < 5; i++){
+        soma += vet[i];
+    }
+    
+    resultado = soma / 5;
+    
+    return resultado;
+}
+ 
+int main() {
+    
+    float vetor[5] = {1, 2, 3, 4, 5};
+    
+    printf("A média dos elementos do vetor é: %.1f", media(vetor));
+ 
+    return 0;
+}
+
+
+10 - Escreva uma função que retorne a soma dos elementos de uma matriz 2 x 3.
+
+#include <stdio.h>
+ 
+int soma_matriz(int mat[2][3]){
+    
+    int soma = 0;
+    
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; j < 3; j++){
+            soma += mat[i][j];
+        }
+    }
+    
+    return soma;
+}
+ 
+int main() {
+    
+    int matriz[2][3] = {{1, 2, 3}, {4, 5, 6}};
+    
+    printf("A soma é: %d", soma_matriz(matriz));
+ 
+    return 0;
+}

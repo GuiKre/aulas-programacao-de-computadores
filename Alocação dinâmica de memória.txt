@@ -1,0 +1,421 @@
+As declarações abaixo alocam espaço na memória para algumas variáveis. A alocação é estática, ou seja, acontece antes que o programa comece a ser executado:
+
+int a;
+float v[10];
+char c;
+
+
+Em muitas aplicações, a quantidade de memória a alocar só se torna conhecida durante a execução do programa. Para lidar com essa situação é preciso recorrer à alocação dinâmica de memória. A alocação dinâmica é administrada pelas funções malloc, calloc, realloc e free, que estão na biblioteca stdlib.
+
+#include <stdlib.h>
+
+
+A função malloc
+
+A função malloc (o nome é uma abreviatura de memory allocation) aloca espaço para um bloco de bytes consecutivos na memória RAM do computador e devolve esse bloco. O número de bytes é especificado no argumento da função. No seguinte fragmento de código, malloc aloca 1 byte:
+
+char *ptr;
+ptr = malloc(1);
+
+
+O endereço devolvido por malloc é do tipo genérico void. No exemplo acima, o endereço é armazenado no ponteiro ptr, que é do tipo ponteiro-para-char. A fim de alocar espaço para um objeto que precisa de mais que 1 byte, convém usar o operador sizeof que diz quantos bytes o objeto em questão tem:
+
+int *vetor;
+vetor = (int *) malloc(sizeof(int));
+
+
+Nesse exemplo, a alocação de memória foi feita para apenas um número inteiro. Para alocar, por exemplo, espaço em memória para 50 números inteiros, o seguinte comando pode ser utilizado:
+
+vetor = (int *) malloc(50 * sizeof(int)); 
+
+
+printf("Informe quantidade de elementos no vetor: ");
+scanf("%d", &quantidade);
+ 
+vetor = (int *) malloc(quantidade * sizeof(int));﻿
+
+
+A função calloc
+
+A função calloc também aloca espaço para um bloco de bytes consecutivos na memória RAM do computador e devolve o esse bloco. A função calloc difere da função malloc pois, além de inicializar os espaços de memória, ainda atribui o valor 0 (zero) para cada um deles. Para alocar, por exemplo, espaço em memória para 50 números inteiros, iniciando os valores com 0, o seguinte comando pode ser utilizado:
+
+printf("Informe quantidade de elementos no vetor: ");
+scanf("%d", &quantidade);
+ 
+vetor = (int *) calloc(quantidade, sizeof(int));
+
+
+A função free
+
+As variáveis alocadas estaticamente dentro de uma função desaparecem assim que a execução da função termina. Já as variáveis alocadas dinamicamente continuam a existir mesmo depois que a execução da função termina. Se for necessário liberar a memória ocupada por essas variáveis, é preciso recorrer à função free.
+
+A função free desaloca a porção de memória alocada por malloc. A instrução free avisa ao sistema que o bloco de bytes apontado pelo ponteiro está disponível para reciclagem. A próxima invocação de malloc poderá tomar posse desses bytes.
+
+free(vetor);
+
+
+A função realloc
+
+Às vezes é necessário alterar, durante a execução do programa, o tamanho de um bloco de bytes que foi alocado por malloc. Isso acontece, por exemplo, durante a leitura de uma entrada de dados que se revela maior que o esperado. Nesse caso, podemos recorrer à função realloc para redimensionar o bloco de bytes.
+
+A função realloc recebe o endereço de um bloco previamente alocado por malloc e o número de bytes que o bloco redimensionado deve ter. A função aloca o novo bloco, copia para ele o conteúdo do bloco original, e devolve o endereço do novo bloco.
+
+Se o novo bloco for uma extensão do bloco original, seu endereço é o mesmo do original (e o conteúdo do original não precisa ser copiado para o novo). Caso contrário, realloc copia o conteúdo do bloco original para o novo e libera o bloco original (invocando free). A propósito, o tamanho do novo bloco pode ser menor que o do bloco original.
+
+No próximo exemplo, foi alocado incialmente um espaço para um vetor de 10 números inteiros e, na sequencia, foi alocado duas vezes mais espaço.
+
+int *vetor;
+ 
+vetor = (int *) malloc(10 * sizeof(int));
+ 
+vetor = (int *) realloc(vetor, 20 * sizeof(int)); 
+
+
+Memória insuficiente
+
+Se a memória do computador já estiver toda ocupada, malloc não consegue alocar mais espaço e devolve NULL. Assim é importante a verificação antes de continuar.
+
+int *vetor;
+ 
+vetor = malloc(10 * sizeof(int));
+ 
+if(vetor == NULL){
+  printf("Memória insuficiente.");
+  return 1;
+}
+
+
+Exemplo de alocação dinâmica para vetores
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main() {
+    int *vetor;
+    int i, quant;
+ 
+    /* Solicita a quantidade de elementos */
+    printf("Informe a quantidade de elementos do vetor: ");
+    scanf("%d", &quant);
+ 
+    /* Aloca memória dinamicamente */
+    vetor = (int *) malloc(quant * sizeof(int));
+    
+    if (vetor == NULL) {
+        printf("Memória insuficiente.\n");
+        return 1;  /* Termina o programa retornando código de erro */
+    }
+ 
+    /* Lê os elementos do usuário */
+    for (i = 0; i < quant; i++) {
+        printf("Informe o elemento para o índice [%d]: ", i);
+        scanf("%d", &vetor[i]);
+    }
+ 
+    /* Mostra os elementos armazenados */
+    printf("\nElementos armazenados:\n");
+    for (i = 0; i < quant; i++) {
+        printf("Índice [%d]: %d\n", i, vetor[i]);
+    }
+ 
+    /* Libera a memória alocada */
+    free(vetor);
+ 
+    return 0;  /* Programa terminou com sucesso */
+}
+
+
+Exemplo de alocação dinâmica para matrizes
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main() {
+    int *matriz;
+    int linhas, colunas, i, j;
+ 
+    printf("Informe o número de linhas da matriz: ");
+    scanf("%d", &linhas);
+ 
+    printf("Informe o número de colunas da matriz: ");
+    scanf("%d", &colunas);
+ 
+    /* Aloca espaço para os elementos da matriz */
+    matriz = (int *) malloc(linhas * colunas * sizeof(int));
+    
+    /* Mostra mensagem e encerra o programa, caso não haja memória suficiente */
+    if (matriz == NULL) {
+        printf("Memória insuficiente.\n");
+        return 1;
+    }
+ 
+    /* Recebe os elementos para a matriz */
+    for (i = 0; i < linhas; i++) {
+        for (j = 0; j < colunas; j++) {
+            printf("Informe o elemento para o índice [%d][%d]: ", i, j);
+            scanf("%d", &matriz[i * colunas + j]);
+        }
+    }
+ 
+    /* Mostra os elementos armazenados na matriz */
+    printf("\nElementos da matriz:\n");
+    for (i = 0; i < linhas; i++) {
+        for (j = 0; j < colunas; j++) {
+            printf("%d\t", matriz[i * colunas + j]);
+        }
+        printf("\n");
+    }
+    
+    /* Libera a memória alocada */
+    free(matriz);
+    
+    return 0;
+}
+
+
+Exemplo de alocação dinâmica para estruturas
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+struct Produtos {
+    char nome[21];
+    float preco;
+};
+ 
+int main() {
+    int quant;
+    struct Produtos *produtos;
+ 
+    printf("Informe a quantidade de registros: ");
+    scanf("%d", &quant);
+    
+    /* Aloca espaço para os elementos da estrutura */
+    produtos = (Produto *) malloc(quant * sizeof(struct Produtos));
+    
+    /* Mostra mensagem e encerra o programa, caso não haja memória suficiente */
+    if (produtos == NULL) {
+        printf("Memória insuficiente.\n");
+        return 1;
+    }
+    
+    /* Recebe os elementos para a estrutura */
+    for (int i = 0; i < quant; ++i) {
+        printf("\nInforme o nome do produto: ");
+        scanf(" %20[^\n]", produtos[i].nome);
+ 
+        printf("Informe o preco do produto: ");
+        scanf("%f", &produtos[i].preco);
+    }
+    
+    /* Mostra os elementos armazenados na estrutura */
+    printf("\nProdutos cadastrados:\n");
+    for (int i = 0; i < quant; ++i) {
+        printf("Nome produto: %s\n", produtos[i].nome);
+        printf("Preço produto: %.2f\n", produtos[i].preco);
+    }
+    
+    /* Libera a memória alocada */
+    free(produtos);
+    
+    return 0;
+}
+
+
+Atividades
+
+1. Escreva um programa para armazenar dinamicamente um vetor de inteiros com uma quantidade de elementos informada pelo usuário (mínimo de 50 elementos). Atribua para cada elemento do vetor o valor do seu índice multiplicado por 2. Após isso, exiba na tela os 10 primeiros e os 10 últimos elementos do vetor. Por fim, libere a memória alocada para o vetor.
+
+2. Escreva um programa que aloque dinamicamente uma estrutura para armazenar dados sobre veículos (fabricante, modelo, ano e preço), sendo que o número de registros (pelo menos 2 registros) é lido do teclado e a memória alocada deve ser definida em função do tamanho da estrutura. Após isso, exiba na tela apenas os dados do segundo veículo cadastrado. Por fim, libere a memória alocada para a estrutura.
+
+3. Escreva um programa que leia números inteiros do teclado e os armazene em um vetor alocado dinamicamente. O usuário irá digitar uma sequência de números, sem limite de quantidade. Os números serão digitados um a um e, sendo que caso ele deseje encerrar a entrada de dados, ele irá digitar o número 0 (zero). Os dados devem ser armazenados na memória deste modo:
+
+a) Inicie o programa com um vetor de números inteiros de tamanho 3 alocado dinamicamente;
+
+b) Caso o espaço alocado esteja cheio, realoque espaço para mais 3 números inteiros;
+
+c) Após o usuário digitar o número 0 (zero), exiba na tela os elementos do vetor;
+
+d) Por fim, libere a memória alocada para o vetor.
+
+
+Alocação dinâmica de memória - Sugestão de resolução
+
+1. Escreva um programa para armazenar dinamicamente um vetor de inteiros com uma quantidade de elementos informada pelo usuário (mínimo de 50 elementos). Atribua para cada elemento do vetor o valor do seu índice multiplicado por 2. Após isso, exiba na tela os 10 primeiros e os 10 últimos elementos do vetor. Por fim, libere a memória alocada para o vetor.
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main() {
+    int *vetor, i, quantidade;
+    
+    /* Recebe a quantidade de elementos para o vetor */
+    printf("Informe a quantidade de elementos (mínimo 50): ");
+    scanf("%d", &quantidade);
+    
+    while(quantidade < 50){
+        printf("Quantidade inválida. Tente novamente.\n");
+        
+        printf("Informe a quantidade de elementos (mínimo 50): ");
+        scanf("%d", &quantidade);
+    }
+    
+    /* Aloca memória para o vetor */
+    vetor = (int *) malloc(quantidade * sizeof(int));
+    
+    /* Mostra mensagem e encerra o programa, caso não haja memória suficiente */
+    if (vetor == NULL) {
+        printf("Memória insuficiente.\n");
+        return 1;
+    }
+ 
+    /* Preenche o vetor */
+    for (i = 0; i < quantidade; i++) {
+        vetor[i] = i * 2;
+    }
+ 
+    /* Mostra os 10 primeiros elementos do vetor */
+    printf("10 primeiros elementos:\n");
+    for (i = 0; i < 10; i++) {
+        printf("%d ", vetor[i]);
+    }
+    printf("\n");
+ 
+    /* Mostra os 10 últimoa elementos do vetor */
+    printf("\n10 últimos elementos:\n");
+    for (i = quantidade - 10; i < quantidade; i++) {
+        printf("%d ", vetor[i]);
+    }
+    printf("\n");
+ 
+    /* Libera a memória alocada */
+    free(vetor);
+ 
+    return 0;
+}
+
+
+2. Escreva um programa que aloque dinamicamente uma estrutura para armazenar dados sobre veículos (fabricante, modelo, ano e preço), sendo que o número de registros (pelo menos 2 registros) é lido do teclado e a memória alocada deve ser definida em função do tamanho da estrutura. Após isso, exiba na tela apenas os dados do segundo veículo cadastrado. Por fim, libere a memória alocada para a estrutura.
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+struct Veiculo {
+    char fabricante[50], modelo[50];
+    int ano;
+    float preco;
+};
+ 
+int main() {
+    
+    int quantidade;
+    struct Veiculo *veiculos;
+    
+    printf("Informe a quantidade de veículos: ");
+    scanf("%d", &quantidade);
+ 
+    /* Aloca espaço para os elementos da estrutura */
+    veiculos = (Veiculo *) malloc(quantidade * sizeof(struct Veiculo));
+    
+    /* Mostra mensagem e encerra o programa, caso não haja memória suficiente */
+    if (veiculos == NULL) {
+        printf("Memória insuficiente.\n");
+        return 1;
+    }
+ 
+    /* Lê os dados dos veículos */
+    for (int i = 0; i < quantidade; i++) {
+        printf("\nVeículo %d:\n", i + 1);
+ 
+        printf("Fabricante: ");
+        scanf(" %49[^\n]", veiculos[i].fabricante);
+ 
+        printf("Modelo: ");
+        scanf(" %49[^\n]", veiculos[i].modelo);
+ 
+        printf("Ano: ");
+        scanf("%d", &veiculos[i].ano);
+    
+        printf("Preço: ");
+        scanf("%f", &veiculos[i].preco);
+    }
+ 
+    /* Mostra os dados do segundo veículo */
+    printf("\n--- Segundo veículo cadastrado ---\n");
+    printf("Fabricante: %s\n", veiculos[1].fabricante);
+    printf("Modelo: %s\n", veiculos[1].modelo);
+    printf("Ano: %d\n", veiculos[1].ano);
+    printf("Preço: %.2f\n", veiculos[1].preco);
+ 
+    /* Libera a memória alocada */
+    free(veiculos);
+ 
+    return 0;
+}
+
+
+3. Escreva um programa que leia números inteiros do teclado e os armazene em um vetor alocado dinamicamente. O usuário irá digitar uma sequência de números, sem limite de quantidade. Os números serão digitados um a um e, sendo que caso ele deseje encerrar a entrada de dados, ele irá digitar o número 0 (zero). Os dados devem ser armazenados na memória deste modo:
+
+a) Inicie o programa com um vetor de números inteiros de tamanho 3 alocado dinamicamente;
+
+b) Caso o espaço alocado esteja cheio, realoque espaço para mais 3 números inteiros;
+
+c) Após o usuário digitar o número 0 (zero), exiba na tela os elementos do vetor;
+
+d) Por fim, libere a memória alocada para o vetor.
+
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main() {
+    int *vetor;
+    int i, num;
+    int quant = 0; /* Quantidade de números armazenados */
+    int capacidade = 3; /* Capacidade inicial */
+ 
+    /* Aloca memória para o vetor */
+    vetor = (int *) malloc(capacidade  * sizeof(int));
+    
+    /* Mostra mensagem e encerra o programa, caso não haja memória suficiente */
+    if (vetor == NULL) {
+        printf("Memória insuficiente.\n");
+        return 1;
+    }
+ 
+    /* Solicita a entrada de números até que o número informado seja 0 */
+    printf("Informe número: ");
+    scanf("%d", &num);
+    
+    while (num != 0) {
+        
+        vetor[quant] = num;
+        quant++;
+        
+        /* Verifica se é necessário realocar memória */
+        if(quant == capacidade){
+            vetor = (int *) realloc(vetor, (capacidade + 3) * sizeof(int));
+        
+            if (vetor == NULL) {
+                printf("Memória insuficiente.\n");
+                return 1;
+            }
+            
+            capacidade += 3;
+        }
+        
+        printf("Informe número: ");
+        scanf("%d", &num);
+    };
+        
+    /* Mostra os elementos armazenados */
+    printf("\nNúmeros digitados:\n");
+    for (i = 0; i < quant; i++) {
+        printf("%d ", vetor[i]);
+    }
+    printf("\n");
+ 
+    /* Libera a memória alocada */
+    free(vetor);
+ 
+    return 0;
+}

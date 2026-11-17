@@ -1,0 +1,77 @@
+1 - Crie um programa em linguagem C para armazenar e exibir informações de pessoas utilizando uma estrutura (struct).
+
+#include <stdio.h>
+ 
+struct Pessoa{
+    char nome[31];
+    int idade;
+    float renda;
+};
+ 
+int main() {
+    
+    struct Pessoa pessoa[3];
+    int i;
+    
+    for(i = 0; i < 3; i++){
+        printf("Informe nome pessoa [%d]: ", i + 1);
+        scanf(" %30[^\n]", pessoa[i].nome);
+    
+        printf("Informe idade pessoa [%d]: ", i + 1);
+        scanf("%d", &pessoa[i].idade);
+    
+        printf("Informe renda pessoa [%d]: ", i + 1);
+        scanf("%f", &pessoa[i].renda);
+    }
+    
+    printf("\n%-30s %5s %10s", "Nome", "Idade", "Renda");
+ 
+    for(i = 0; i < 3; i++){
+        printf("\n%-30s %5d %10.2f", pessoa[i].nome, pessoa[i].idade, pessoa[i].renda);
+    }
+    
+    return 0;
+}
+
+
+Atividades avaliativa - Registros - Sugestão de resolução
+
+#include <stdio.h>
+ 
+/* Definição do registro */
+struct Usuarios{
+    char nome[21];
+    float bytes;
+};
+ 
+int main(){
+ 
+    /* Declaração do registro e entrada de dados */
+    struct Usuarios usuario[6] = {{"alexandre", 456123789}, {"anderson",1245698456}, {"antonio", 123456456}, {"carlos", 91257581}, {"cesar", 987458},{"rosemary", 789456125}};
+    int i;
+    float espaco_utilizado, espaco_total, porcentagem_uso;
+    
+    /* Cálculo do espaço total ocupado pelos usuários para o cálculo da porcentagem */
+    espaco_total = 0;
+    
+    for(i = 0; i < 6; i++){
+        espaco_total += usuario[i].bytes;
+    }
+    
+    /* Saída de dados */
+    printf("Nr.   Usuário           Espaço utilizado        %% do uso");
+    printf("\n--------------------------------------------------------");
+    
+    for(i = 0; i < 6; i++){
+        espaco_utilizado = usuario[i].bytes / 1024 / 1024;
+        porcentagem_uso = usuario[i].bytes / espaco_total * 100;
+        
+        printf("\n%-5d %-15s %15.2f MB %15.2f", i + 1, usuario[i].nome,espaco_utilizado, porcentagem_uso);
+    }
+    
+    printf("\n--------------------------------------------------------");
+    printf("\nEspaço total ocupado: %.2f MB", espaco_total / 1024 / 1024);
+    printf("\nEspaço médio ocupado: %.2f MB", espaco_total / 1024 / 1024 / 6);
+    
+    return 0;
+}
